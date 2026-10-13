@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | NOVA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 20px 8%;
+            border-bottom: 1px solid #e5eaf2;
+        }
+
+        .logo {
+            color: #1769ff;
+            font-size: 27px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px 16px;
+        }
+
+        .signup-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 520px;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(20, 45, 90, 0.08);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #697386;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d6deea;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1769ff;
+            box-shadow: 0 0 0 3px rgba(23, 105, 255, 0.1);
+        }
+
+        .error {
+            display: block;
+            color: #d92d20;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .messages {
+            margin-bottom: 18px;
+        }
+
+        .message {
+            padding: 11px 13px;
+            border-radius: 7px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            background: #1769ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .submit-btn:hover {
+            background: #0754df;
+        }
+
+        .signin-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #697386;
+            font-size: 14px;
+        }
+
+        .signin-link a {
+            color: #1769ff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+            color: #697386;
+        }
+
+        @media (max-width: 480px) {
+            .signup-card {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="{% url 'home' %}" class="logo">NOVA.</a>
+    </header>
+
+    <main>
+        <section class="signup-card">
+            <h1>Create Account</h1>
+            <p class="subtitle">
+                Join NOVA to explore our products and manage your account.
+            </p>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'signup' %}">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                        {% for error in form.first_name.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                        {% for error in form.last_name.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email Address</label>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                    {{ form.phone_number }}
+                    {% for error in form.phone_number.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.country.id_for_label }}">Country</label>
+                    {{ form.country }}
+                    {% for error in form.country.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                    {{ form.password }}
+                    {% for error in form.password.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
+                    {{ form.confirm_password }}
+                    {% for error in form.confirm_password.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="signin-link">
+                Already have an account?
+                <a href="{% url 'login' %}">Sign in</a>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        &copy; {% now "Y" %} NOVA. All rights reserved.
+    </footer>
+</body>
+</html>

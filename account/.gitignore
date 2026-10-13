@@ -1,0 +1,21 @@
+# created by virtualenv automatically
+*# Virtual environment
+env/
+venv/
+myenv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Secrets
+.env
+
+# Django local files
+db.sqlite3
+media/
+
+# Editor
+.vscode/
+.idea/

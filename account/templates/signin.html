@@ -1,10 +1,11 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In | NOVA</title>
+    <title>Sign In | NOVA.</title>
 
     <style>
         * {
@@ -14,247 +15,272 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f8ff;
-            color: #172b4d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Arial, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Navbar */
+        /* NAVBAR - SHARED DIMENSIONS */
         .navbar {
-            height: 75px;
-            background: #ffffff;
+            min-height: 75px;
+            padding: 0 8%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 8%;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            gap: 25px;
+            border-bottom: 1px solid #eee;
+            background: rgba(255, 255, 255, 0.96);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: 800;
-            color: #1769ff;
+            flex-shrink: 0;
+            font-size: 27px;
+            font-weight: 750;
+            letter-spacing: -1.5px;
+            color: #1d1d1f;
             text-decoration: none;
-            letter-spacing: 2px;
         }
 
-        .nav-link {
-            color: #344054;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #333;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: color 0.2s;
         }
 
-        .nav-link:hover {
-            color: #1769ff;
+        .nav-links a:hover {
+            color: #0071e3;
         }
 
-        /* Main content */
+        .logout-form {
+            display: inline-flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        .nav-links .nav-logout {
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: #333;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-links .nav-logout:hover {
+            color: #0071e3;
+        }
+
+        /* MAIN CONTENT */
         .main-content {
             flex: 1;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             padding: 45px 20px;
         }
 
-        .signin-container {
+        .container {
+            background: #fff;
             width: 100%;
-            max-width: 440px;
-            background: #ffffff;
-            padding: 38px 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(23, 105, 255, 0.08);
-            border: 1px solid #e8eef8;
-        }
-
-        .signin-heading {
+            max-width: 420px;
+            padding: 38px 32px;
+            border-radius: 18px;
             text-align: center;
-            margin-bottom: 30px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
         }
 
-        .signin-heading h1 {
+        h1 {
             font-size: 28px;
-            color: #172b4d;
+            font-weight: 650;
+            letter-spacing: -0.5px;
             margin-bottom: 10px;
         }
 
-        .signin-heading p {
-            color: #667085;
+        .description {
+            color: #6e6e73;
             font-size: 14px;
             line-height: 1.6;
+            margin-bottom: 25px;
         }
 
-        /* Messages */
         .messages {
-            margin-bottom: 20px;
-        }
-
-        .message {
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 13px;
+            margin-bottom: 16px;
+            font-size: 14px;
             line-height: 1.5;
         }
 
+        .message {
+            margin-bottom: 8px;
+        }
+
         .message.error {
-            color: #b42318;
-            background: #fef3f2;
-            border: 1px solid #fecdca;
+            color: #d93025;
         }
 
         .message.success {
-            color: #027a48;
-            background: #ecfdf3;
-            border: 1px solid #abefc6;
+            color: #188038;
+        }
+
+        .message.warning {
+            color: #9a6700;
         }
 
         .message.info {
-            color: #175cd3;
-            background: #eff8ff;
-            border: 1px solid #b2ddff;
+            color: #0071e3;
         }
 
-        /* Form */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            text-align: left;
         }
 
         .form-group label {
             display: block;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 8px;
-            color: #344054;
         }
 
         .form-group input {
             width: 100%;
-            padding: 13px 14px;
-            border: 1px solid #d0d5dd;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 14px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            font-size: 15px;
             outline: none;
-            background: #ffffff;
-            color: #172b4d;
+            background: #fff;
+            color: #1d1d1f;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-group input:focus {
-            border-color: #1769ff;
-            box-shadow: 0 0 0 3px rgba(23, 105, 255, 0.12);
+            border-color: #0071e3;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
         }
 
-        .form-group input::placeholder {
-            color: #98a2b3;
-        }
-
-        /* Remember me and forgot password */
-        .options-row {
+        .form-options {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
-            margin: 2px 0 25px;
+            margin-bottom: 22px;
             font-size: 13px;
         }
 
-        .remember-label {
+        .remember-me {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #475467;
+            gap: 7px;
+            color: #515154;
+        }
+
+        .remember-me input {
+            accent-color: #0071e3;
             cursor: pointer;
         }
 
-        .remember-label input {
-            width: 16px;
-            height: 16px;
-            accent-color: #1769ff;
-            cursor: pointer;
-        }
-
-        .forgot-link {
-            color: #1769ff;
+        .forgot-link,
+        .form-footer a {
+            color: #0071e3;
             text-decoration: none;
-            font-weight: 600;
         }
 
-        .forgot-link:hover {
+        .forgot-link:hover,
+        .form-footer a:hover {
             text-decoration: underline;
         }
 
-        /* Sign in button */
-        .signin-button {
+        .submit-btn {
             width: 100%;
             padding: 14px;
+            background: #0071e3;
+            color: #fff;
             border: none;
-            border-radius: 8px;
-            background: #1769ff;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 700;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
+            transition: background 0.2s;
         }
 
-        .signin-button:hover {
-            background: #0d55d9;
-            transform: translateY(-1px);
+        .submit-btn:hover {
+            background: #0077ed;
         }
 
-        /* Signup link */
-        .signup-text {
-            text-align: center;
-            margin-top: 25px;
+        .form-footer {
+            margin-top: 24px;
             font-size: 14px;
-            color: #667085;
+            color: #6e6e73;
         }
 
-        .signup-text a {
-            color: #1769ff;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .signup-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
+        /* FOOTER */
         .footer {
-            padding: 20px;
+            padding: 22px 8%;
             text-align: center;
-            background: #ffffff;
-            color: #98a2b3;
             font-size: 12px;
-            border-top: 1px solid #eaecf0;
+            color: #86868b;
+            border-top: 1px solid #e5e5e7;
+            background: #fff;
         }
 
-        /* Mobile */
-        @media (max-width: 480px) {
+        /* MOBILE NAVBAR */
+        @media (max-width: 700px) {
             .navbar {
-                height: 65px;
-                padding: 0 6%;
+                min-height: 65px;
+                padding: 12px 6%;
+                flex-wrap: wrap;
+                row-gap: 12px;
             }
 
-            .logo {
-                font-size: 24px;
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 16px;
+                padding-bottom: 4px;
             }
 
-            .signin-container {
-                padding: 30px 22px;
+            .main-content {
+                padding: 30px 16px;
             }
 
-            .signin-heading h1 {
+            .container {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a,
+            .nav-links .nav-logout {
+                font-size: 12px;
+            }
+
+            h1 {
                 font-size: 25px;
             }
 
-            .options-row {
+            .form-options {
                 font-size: 12px;
             }
         }
@@ -263,30 +289,43 @@
 
 <body>
 
-    <!-- Navbar -->
     <header class="navbar">
-        <a href="{% url 'home' %}" class="logo">NOVA</a>
-        <a href="{% url 'signup' %}" class="nav-link">
-            Create an account
-        </a>
+        <a href="{% url 'home' %}" class="logo">NOVA.</a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'store' %}">Store</a>
+            <a href="{% url 'home' %}#categories">Categories</a>
+            <a href="{% url 'home' %}#products">Products</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Profile</a>
+
+                <form method="POST" action="{% url 'logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-logout">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+        </nav>
     </header>
 
-    <!-- Sign In -->
     <main class="main-content">
-        <section class="signin-container">
+        <div class="container">
+            <h1>Welcome back</h1>
 
-            <div class="signin-heading">
-                <h1>Welcome Back</h1>
-                <p>Sign in to your NOVA account to continue shopping.</p>
-            </div>
+            <p class="description">
+                Sign in to your NOVA account.
+            </p>
 
-            <!-- Django messages -->
             {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
-                        <div class="message {{ message.tags }}">
+                        <p class="message {{ message.tags }}">
                             {{ message }}
-                        </div>
+                        </p>
                     {% endfor %}
                 </div>
             {% endif %}
@@ -294,20 +333,18 @@
             <form method="POST" action="{% url 'login' %}">
                 {% csrf_token %}
 
-                <!-- Email -->
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Email address</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="Enter your email address"
+                        placeholder="Enter your email"
                         autocomplete="email"
                         required
                     >
                 </div>
 
-                <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input
@@ -320,41 +357,34 @@
                     >
                 </div>
 
-                <!-- Remember me and forgot password -->
-                <div class="options-row">
-                    <label class="remember-label" for="remember_me">
+                <div class="form-options">
+                    <label class="remember-me" for="remember_me">
                         <input
                             type="checkbox"
-                            name="remember_me"
                             id="remember_me"
+                            name="remember_me"
                             value="yes"
                         >
-                        <span>Remember me</span>
+                        Remember me
                     </label>
 
-                    <a
-                        href="{% url 'forgot_password' %}"
-                        class="forgot-link"
-                    >
+                    <a href="{% url 'forgot_password' %}" class="forgot-link">
                         Forgot password?
                     </a>
                 </div>
 
-                <!-- Submit -->
-                <button type="submit" class="signin-button">
+                <button type="submit" class="submit-btn">
                     Sign In
                 </button>
             </form>
 
-            <p class="signup-text">
+            <p class="form-footer">
                 Don't have an account?
-                <a href="{% url 'signup' %}">Sign up</a>
+                <a href="{% url 'signup' %}">Create one</a>
             </p>
-
-        </section>
+        </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         &copy; {% now "Y" %} NOVA. All rights reserved.
     </footer>

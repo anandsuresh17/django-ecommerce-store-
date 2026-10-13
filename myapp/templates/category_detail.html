@@ -1,3 +1,4 @@
+ {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,35 +27,75 @@
             color: inherit;
         }
 
+        button {
+            font-family: inherit;
+        }
+
+        /* NAVBAR - ORIGINAL DIMENSIONS PRESERVED */
+
         .navbar {
-            min-height: 60px;
-            padding: 12px 8%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            min-height: 64px;
+            padding: 0 7%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            background: rgba(255,255,255,.96);
-            z-index: 10;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -1px;
+            flex-shrink: 0;
+            font-size: 27px;
+            font-weight: 750;
+            letter-spacing: -1.5px;
         }
 
         .nav-links {
             display: flex;
-            gap: 24px;
-            font-size: 14px;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
         }
 
-        .nav-links a:hover,
-        .back-link:hover {
-            color: #0071e3;
+        .nav-links a {
+            font-size: 13px;
+            color: #333;
+            white-space: nowrap;
+            transition: color 0.2s;
         }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .logout-form {
+            display: inline-flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        .nav-links .nav-logout {
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: #333;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+
+        .nav-links .nav-logout:hover {
+            color: var(--blue);
+        }
+        /* CATEGORY HERO */
 
         .hero {
             text-align: center;
@@ -73,6 +114,8 @@
             font-size: 16px;
         }
 
+        /* PRODUCTS SECTION */
+
         .section {
             padding: 45px 8%;
         }
@@ -87,12 +130,17 @@
 
         .section-heading h2 {
             font-size: 27px;
-            letter-spacing: -.5px;
+            letter-spacing: -0.5px;
         }
 
         .back-link {
             color: #0071e3;
             font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
 
         .product-grid {
@@ -109,7 +157,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform .2s;
+            transition: transform 0.2s;
             min-width: 0;
         }
 
@@ -166,6 +214,7 @@
             padding: 8px 16px;
             font-size: 13px;
             margin-top: auto;
+            transition: background 0.2s;
         }
 
         .small-btn:hover {
@@ -181,6 +230,8 @@
             border-radius: 15px;
         }
 
+        /* FOOTER */
+
         footer {
             background: #f5f5f7;
             text-align: center;
@@ -190,23 +241,59 @@
             margin-top: 40px;
         }
 
+        /* TABLET */
+
         @media (max-width: 900px) {
+            .navbar {
+                padding: 12px 5%;
+                gap: 18px;
+            }
+
+            .nav-links {
+                gap: 17px;
+            }
+
             .product-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        @media (max-width: 560px) {
+        /* MOBILE */
+
+        @media (max-width: 600px) {
             .navbar {
-                padding: 14px 5%;
+                min-height: auto;
+                flex-direction: column;
+                justify-content: center;
+                gap: 9px;
+                padding: 10px 4%;
+            }
+
+            .logo {
+                width: 100%;
+                font-size: 24px;
+                text-align: center;
             }
 
             .nav-links {
-                gap: 14px;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px 17px;
+            }
+
+            .nav-links a,
+            .nav-links .nav-logout {
+                font-size: 12px;
             }
 
             .section {
                 padding: 30px 5%;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-wrap: wrap;
             }
 
             .product-grid {
@@ -225,21 +312,58 @@
             .product-card h3 {
                 font-size: 15px;
             }
+
+            .hero {
+                padding: 40px 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-links {
+                gap: 9px 12px;
+            }
+
+            .nav-links a,
+            .nav-links .nav-logout {
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
     <header class="navbar">
+
         <a href="{% url 'home' %}" class="logo">NOVA.</a>
 
-        <nav class="nav-links">
+        <nav class="nav-links" aria-label="Main navigation">
             <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'store' %}">Store</a>
+            <a href="{% url 'home' %}#categories">Categories</a>
+            <a href="{% url 'home' %}#products">Products</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Profile</a>
+
+                <form method="POST"
+                      action="{% url 'logout' %}"
+                      class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-logout">
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
         </nav>
+
     </header>
 
+    <!-- CATEGORY HEADER -->
     <section class="hero">
         <h1>{{ category.name }}</h1>
 
@@ -250,7 +374,9 @@
         {% endif %}
     </section>
 
+    <!-- PRODUCTS -->
     <main class="section">
+
         <div class="section-heading">
             <h2>Explore Products</h2>
 
@@ -260,6 +386,7 @@
         </div>
 
         <div class="product-grid">
+
             {% for product in products %}
                 <article class="product-card">
 
@@ -276,6 +403,7 @@
                                 Image coming soon
                             </div>
                         {% endif %}
+
                     </a>
 
                     <h3>{{ product.name }}</h3>
@@ -294,15 +422,18 @@
                     </a>
 
                 </article>
+
             {% empty %}
                 <p class="empty-message">
                     No active products are available in this category yet.
                 </p>
             {% endfor %}
+
         </div>
 
     </main>
 
+    <!-- FOOTER -->
     <footer>
         Copyright &copy; {% now "Y" %} NOVA Store. All rights reserved.
     </footer>

@@ -111,6 +111,11 @@ STORAGES = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-ecommerce-store-hd0t.onrender.com',
+]
+
 # Email configuration (Gmail SMTP)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -124,3 +129,5 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Default primary key type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
